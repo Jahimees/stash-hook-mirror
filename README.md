@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/ef-labs/stash-hook-mirror.png)](https://travis-ci.org/ef-labs/stash-hook-mirror)
-
-# Bitbucket Server Repository Hook for Mirroring
+# Bitbucket Server Repository Hook for Mirroring (Adapted for Bitbucket v8.19.*)
 
 The following is a plugin for Atlassian Bitbucket Server to provide repository mirroring to a remote repository.
 
@@ -13,7 +11,7 @@ The following is a plugin for Atlassian Bitbucket Server to provide repository m
 * `atlas-help`  -- prints description for all commands in the SDK
 
 
-Full documentation is always available at:
+Full documentation is always available at (not available anymore :D):
 https://developer.atlassian.com/display/DOCS/Introduction+to+the+Atlassian+Plugin+SDK
 
 
@@ -24,3 +22,10 @@ https://bitbucket.org/atlassian/aui/src/master/src/soy/form.soy
 
 The plugin can be found on the Atlassian Marketplace here:
 https://marketplace.atlassian.com/plugins/com.englishtown.stash-hook-mirror
+
+# Community updates:
+
+## Update 3.3.1
+1) Adapted for using on 8.* bitbucket versions.
+2) Fixed plugin settings being uneditable after Reupload app (Big thanks for https://github.com/ef-labs/stash-hook-mirror)
+3) Added support for authentication on a remote repository using a personal token.
