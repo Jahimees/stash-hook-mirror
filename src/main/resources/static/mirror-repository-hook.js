@@ -42,15 +42,19 @@ define('et/hook/mirror', ['jquery', 'exports'], function ($, exports) {
         }
 
         addRemoveButton();
-        addUseTokenCondition(0);
+        for (let i = 0; i < 10; i++) {
+            addUseTokenCondition(i);
+        }
     }
 
     function addUseTokenCondition(index) {
         const $useTokenBox = $("#useToken" + index)
 
-        changeFieldsVisibility(index)
+        if ($useTokenBox[0] != null && typeof $useTokenBox[0] !== "undefined") {
+            changeFieldsVisibility(index)
 
-        $useTokenBox.off().on("change", () => changeFieldsVisibility(index))
+            $useTokenBox.off().on("change", () => changeFieldsVisibility(index))
+        }
     }
 
     function changeFieldsVisibility(index) {
