@@ -1,0 +1,18 @@
+version: '3.8'
+name: atlas-dev
+services:
+  atlas-bitbucket-dev:
+    image: atlassian/bitbucket:8.19-jdk11
+    container_name: atlas-bitbucket-dev
+    ports:
+      - "7990:7990"
+      - "7999:7999"
+    restart: on-failure
+    environment:
+      JVM_SUPPORT_RECOMMENDED_ARGS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:7999
+        -Xmx6g -Datlassian.plugins.enable.wait=500 -Dupm.plugin.upload.enabled=true
+        -Datlassian.mail.senddisabled=false -Datlassian.allow.insecure.url.parameter.login=true
+      ATL_TOMCAT_CONTEXTPATH: /bitbucket
+      ATL_TOMCAT_PORT: 7990
+    volumes:
+      - C:\Workspace\Docker\bitbucket:/var/atlassian/application-data/bitbucket

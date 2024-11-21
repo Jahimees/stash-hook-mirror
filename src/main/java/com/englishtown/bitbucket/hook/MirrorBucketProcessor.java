@@ -83,8 +83,7 @@ public class MirrorBucketProcessor implements BucketProcessor<MirrorRequest> {
     private void runMirrorCommand(MirrorSettings settings, Repository repository) {
         log.debug("{}: Preparing to push changes to mirror", repository);
 
-        String password = passwordEncryptor.decrypt(settings.password);
-        String authenticatedUrl = getAuthenticatedUrl(settings.mirrorRepoUrl, settings.username, password);
+        String authenticatedUrl = getAuthenticatedUrl(settings);
 
         // Call push command with the prune flag and refspecs for heads and tags
         // Do not use the mirror flag as pull-request refs are included
@@ -128,14 +127,24 @@ public class MirrorBucketProcessor implements BucketProcessor<MirrorRequest> {
         log.info("{}: Push completed with the following output:\n{}", repository, result);
     }
 
-    String getAuthenticatedUrl(String mirrorRepoUrl, String username, String password) {
+    String getAuthenticatedUrl(MirrorSettings settings) {
+        String mirrorRepoUrl = settings.mirrorRepoUrl;
+        String username = settings.username;
+        String decryptedPassword = passwordEncryptor.decrypt(settings.password);
+
         // Only http(s) has username/password
         if (!mirrorRepoUrl.toLowerCase(Locale.ROOT).startsWith("http")) {
             return mirrorRepoUrl;
         }
 
         URI uri = URI.create(mirrorRepoUrl);
-        String userInfo = username + ":" + password;
+
+        String userInfo;
+        if (settings.useToken) {
+            userInfo = settings.token;
+        } else {
+            userInfo = username + ":" + decryptedPassword;
+        }
 
         try {
             return new URI(uri.getScheme(), userInfo, uri.getHost(), uri.getPort(),

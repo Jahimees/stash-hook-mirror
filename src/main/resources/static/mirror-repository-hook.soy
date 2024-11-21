@@ -61,6 +61,7 @@
             {/param}
             {param descriptionText: getText('mirror-repository-hook.username.description') /}
             {param errorTexts: $errors ? $errors['username' + $index] : null /}
+            {param hidden: $config['useToken' + $index] == true /}
         {/call}
         {call aui.form.passwordField}
             {param id: 'password' + $index /}
@@ -70,6 +71,17 @@
             {/param}
             {param descriptionText: getText('mirror-repository-hook.password.description') /}
             {param errorTexts: $errors ? $errors['password' + $index] : null /}
+            {param hidden: $config['useToken' + $index] == true /}
+        {/call}
+        {call aui.form.passwordField}
+            {param id: 'token' + $index /}
+            {param value: $config['token' + $index] /}
+            {param labelContent}
+                {getText('mirror-repository-hook.token.label')}
+            {/param}
+            {param descriptionText: getText('mirror-repository-hook.token.description') /}
+            {param errorTexts: $errors ? $errors['token' + $index] : null /}
+            {param hidden: $config['useToken' + $index] != false /}
         {/call}
         {call aui.form.textareaField}
             {param id: 'refspec' + $index /}
@@ -98,6 +110,11 @@
                     'id' : 'atomic' + $index,
                     'labelText': getText('mirror-repository-hook.atomic.label'),
                     'isChecked' : $config['atomic' + $index] != false
+                ],
+                [
+                    'id' : 'useToken' + $index,
+                    'labelText': getText('mirror-repository-hook.usetoken.label'),
+                    'isChecked' : $config['useToken' + $index] == true
                 ]
             ] /}
         {/call}

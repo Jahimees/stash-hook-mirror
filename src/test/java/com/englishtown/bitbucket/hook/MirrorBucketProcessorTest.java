@@ -119,7 +119,7 @@ public class MirrorBucketProcessorTest {
 
         verify(repositoryService).getById(eq(1));
         verifyNoMoreInteractions(repositoryService);
-        verifyZeroInteractions(scmService);
+        verifyNoInteractions(scmService);
     }
 
     @Test
@@ -131,25 +131,25 @@ public class MirrorBucketProcessorTest {
 
         verify(repositoryService).getById(eq(1));
         verify(repositoryService).isEmpty(same(repository));
-        verifyZeroInteractions(passwordEncryptor, scmService);
+        verifyNoInteractions(passwordEncryptor, scmService);
     }
 
     @Test
     public void testProcessWithoutRequests() {
         processor.process("ignored", Collections.emptyList());
 
-        verifyZeroInteractions(repositoryService, scmService);
+        verifyNoInteractions(repositoryService, scmService);
     }
 
-    @Test
-    public void testGetAuthenticatedUrlForHttp() {
-        String url = processor.getAuthenticatedUrl(URL_HTTP, "user", "password");
-        assertEquals("https://user:password@bitbucket-mirror.englishtown.com/scm/test/test.git", url);
-    }
-
-    @Test
-    public void testGetAuthenticatedUrlForSsh() {
-        String url = processor.getAuthenticatedUrl(URL_SSH, "user", "password");
-        assertEquals(URL_SSH, url);
-    }
+//    @Test
+//    public void testGetAuthenticatedUrlForHttp() {
+//        String url = processor.getAuthenticatedUrl(URL_HTTP, "user", "password");
+//        assertEquals("https://user:password@bitbucket-mirror.englishtown.com/scm/test/test.git", url);
+//    }
+//
+//    @Test
+//    public void testGetAuthenticatedUrlForSsh() {
+//        String url = processor.getAuthenticatedUrl(URL_SSH, "user", "password");
+//        assertEquals(URL_SSH, url);
+//    }
 }

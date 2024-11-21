@@ -1,9 +1,9 @@
 package com.englishtown.bitbucket.hook;
 
+import com.atlassian.bitbucket.io.StringOutputHandler;
 import com.atlassian.bitbucket.scm.CommandErrorHandler;
 import com.atlassian.bitbucket.scm.CommandExitHandler;
 import com.atlassian.bitbucket.scm.CommandOutputHandler;
-import com.atlassian.utils.process.StringOutputHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

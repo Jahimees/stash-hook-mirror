@@ -1,6 +1,7 @@
 define('et/hook/mirror', ['jquery', 'exports'], function ($, exports) {
 
     exports.init = function (createSubView, createButton) {
+
         $('#et-add-button').click(function () {
             try {
                 var currIndex, index = 0, name, html;
@@ -18,6 +19,7 @@ define('et/hook/mirror', ['jquery', 'exports'], function ($, exports) {
                 $('#et-add-button').before(html);
 
                 addRemoveButton();
+                addUseTokenCondition(index);
 
             } catch (e) {
                 alert(e.message);
@@ -27,7 +29,11 @@ define('et/hook/mirror', ['jquery', 'exports'], function ($, exports) {
         function addRemoveButton() {
             // Select all fieldset groups that don't have a remove button
             var group = $(".et-mirror-group").not(":has(.et-remove-button)");
-            var html = createButton({text: 'Remove', extraClasses: 'et-remove-button add-hook-button', extraAttributes: 'type=button'});
+            var html = createButton({
+                text: 'Remove',
+                extraClasses: 'et-remove-button add-hook-button',
+                extraAttributes: 'type=button'
+            });
             group.find('.et-mirror-repo input').after(html);
 
             group.find('.et-remove-button').click(function (e) {
@@ -36,6 +42,33 @@ define('et/hook/mirror', ['jquery', 'exports'], function ($, exports) {
         }
 
         addRemoveButton();
+        addUseTokenCondition(0);
     }
 
+    function addUseTokenCondition(index) {
+        const $useTokenBox = $("#useToken" + index)
+
+        changeFieldsVisibility(index)
+
+        $useTokenBox.off().on("change", () => changeFieldsVisibility(index))
+    }
+
+    function changeFieldsVisibility(index) {
+        const $useTokenBox = $("#useToken" + index)
+        const $tokenBlock = $("#token" + index).parent()
+        const $usernameBlock = $("#username" + index).parent()
+        const $passwordBlock = $("#password" + index).parent()
+
+        let useTokenFlag = $useTokenBox[0].checked;
+
+        if (useTokenFlag) {
+            $usernameBlock.css("display", "none")
+            $passwordBlock.css("display", "none")
+            $tokenBlock.css("display", "block")
+        } else {
+            $usernameBlock.css("display", "block")
+            $passwordBlock.css("display", "block")
+            $tokenBlock.css("display", "none")
+        }
+    }
 });

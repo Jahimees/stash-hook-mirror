@@ -97,7 +97,7 @@ public class MirrorRepositoryHookTest {
 
         hook.postUpdate(buildContext(), new RepositoryPushHookRequest.Builder(repo).build());
 
-        verifyZeroInteractions(bucketedExecutor);
+        verifyNoInteractions(bucketedExecutor);
     }
 
     @Test
@@ -113,7 +113,7 @@ public class MirrorRepositoryHookTest {
 
         hook.postUpdate(context, new RepositoryPushHookRequest.Builder(repo).build());
 
-        verifyZeroInteractions(bucketedExecutor);
+        verifyNoInteractions(bucketedExecutor);
     }
 
     @Test
@@ -223,7 +223,7 @@ public class MirrorRepositoryHookTest {
 
         hook.validate(settings, errors, Scopes.global());
 
-        verifyZeroInteractions(bucketedExecutor, errors, settings);
+        verifyNoInteractions(bucketedExecutor, errors, settings);
     }
 
     @Test
@@ -234,7 +234,7 @@ public class MirrorRepositoryHookTest {
 
         hook.validate(settings, errors, Scopes.project(project));
 
-        verifyZeroInteractions(bucketedExecutor, errors, settings);
+        verifyNoInteractions(bucketedExecutor, errors, settings);
     }
 
     private PostRepositoryHookContext buildContext() {
