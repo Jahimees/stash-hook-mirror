@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.englishtown</groupId>
@@ -29,9 +30,10 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
 
-        <bitbucket.version>8.19.0</bitbucket.version>
+        <bitbucket.version>8.19.2</bitbucket.version>
         <bitbucket.test.version>${bitbucket.version}</bitbucket.test.version>
-        <amps.version>8.1.1</amps.version>
+        <amps.version>8.9.2</amps.version>
+        <atlassian.spring.scanner.version>2.2.0</atlassian.spring.scanner.version>
     </properties>
 
     <dependencyManagement>
@@ -47,6 +49,17 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>com.atlassian.plugin</groupId>
+            <artifactId>atlassian-spring-scanner-annotation</artifactId>
+            <version>${atlassian.spring.scanner.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>com.atlassian.bitbucket.server</groupId>
             <artifactId>bitbucket-api</artifactId>
@@ -108,6 +121,23 @@
                             <dataVersion>${bitbucket.test.version}</dataVersion>
                         </product>
                     </products>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.atlassian.plugin</groupId>
+                <artifactId>atlassian-spring-scanner-maven-plugin</artifactId>
+                <version>${atlassian.spring.scanner.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>atlassian-spring-scanner</goal>
+                        </goals>
+                        <phase>process-classes</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- Enable this to get build-time logging of annotations atlassian-spring-scanner-maven-plugin has noticed -->
+                    <verbose>false</verbose>
                 </configuration>
             </plugin>
         </plugins>

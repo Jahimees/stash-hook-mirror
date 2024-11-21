@@ -4,7 +4,11 @@ import com.atlassian.bitbucket.concurrent.BucketedExecutor;
 import com.atlassian.bitbucket.concurrent.BucketedExecutorSettings;
 import com.atlassian.bitbucket.concurrent.ConcurrencyPolicy;
 import com.atlassian.bitbucket.concurrent.ConcurrencyService;
-import com.atlassian.bitbucket.hook.repository.*;
+import com.atlassian.bitbucket.hook.repository.PostRepositoryHook;
+import com.atlassian.bitbucket.hook.repository.PostRepositoryHookContext;
+import com.atlassian.bitbucket.hook.repository.RepositoryHookRequest;
+import com.atlassian.bitbucket.hook.repository.RepositoryHookTrigger;
+import com.atlassian.bitbucket.hook.repository.StandardRepositoryHookTrigger;
 import com.atlassian.bitbucket.repository.Repository;
 import com.atlassian.bitbucket.scm.git.GitScm;
 import com.atlassian.bitbucket.scope.RepositoryScope;
@@ -14,16 +18,25 @@ import com.atlassian.bitbucket.server.ApplicationPropertiesService;
 import com.atlassian.bitbucket.setting.Settings;
 import com.atlassian.bitbucket.setting.SettingsValidationErrors;
 import com.atlassian.bitbucket.setting.SettingsValidator;
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.google.common.collect.ImmutableSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class MirrorRepositoryHook implements PostRepositoryHook<RepositoryHookRequest>, SettingsValidator {
+@Component
+public class MirrorRepositoryHook implements PostRepositoryHook<RepositoryHookRequest>, SettingsValidator,
+        DisposableBean {
 
     static final String PROP_PREFIX = "plugin.com.englishtown.stash-hook-mirror.push.";
     static final String PROP_ATTEMPTS = PROP_PREFIX + "attempts";
@@ -52,9 +65,9 @@ public class MirrorRepositoryHook implements PostRepositoryHook<RepositoryHookRe
 
     private static final Logger logger = LoggerFactory.getLogger(MirrorRepositoryHook.class);
 
-    public MirrorRepositoryHook(ConcurrencyService concurrencyService,
+    public MirrorRepositoryHook(@ComponentImport ConcurrencyService concurrencyService,
                                 PasswordEncryptor passwordEncryptor,
-                                ApplicationPropertiesService propertiesService,
+                                @ComponentImport ApplicationPropertiesService propertiesService,
                                 MirrorBucketProcessor pushProcessor,
                                 SettingsReflectionHelper settingsReflectionHelper) {
         logger.debug("MirrorRepositoryHook: init started");
@@ -250,5 +263,10 @@ public class MirrorRepositoryHook implements PostRepositoryHook<RepositoryHookRe
 
         // Unfortunately the settings are stored in an immutable map, so need to cheat with reflection
         settingsReflectionHelper.set(values, settings);
+    }
+
+    @Override
+    public void destroy() {
+        pushExecutor.shutdown();
     }
 }

@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 class MirrorRequest implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private final int repositoryId;
     private final MirrorSettings settings;
 
@@ -26,7 +27,6 @@ class MirrorRequest implements Serializable {
         return settings;
     }
 
-    @Override
     public String toString() {
         return repositoryId + ":" + settings.mirrorRepoUrl;
     }

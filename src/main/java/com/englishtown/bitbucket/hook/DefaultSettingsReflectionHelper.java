@@ -1,6 +1,7 @@
 package com.englishtown.bitbucket.hook;
 
 import com.atlassian.bitbucket.setting.Settings;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 /**
  * Default implementation of {@link SettingsReflectionHelper}
  */
+@Component
 public class DefaultSettingsReflectionHelper implements SettingsReflectionHelper {
 
     /**

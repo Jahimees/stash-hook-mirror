@@ -73,7 +73,7 @@
             {param errorTexts: $errors ? $errors['password' + $index] : null /}
             {param hidden: $config['useToken' + $index] == true /}
         {/call}
-        {call aui.form.passwordField}
+        {call aui.form.textField}
             {param id: 'token' + $index /}
             {param value: $config['token' + $index] /}
             {param labelContent}
