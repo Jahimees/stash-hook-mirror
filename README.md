@@ -29,3 +29,4 @@ https://marketplace.atlassian.com/plugins/com.englishtown.stash-hook-mirror
 1) Adapted for using on 8.* bitbucket versions.
 2) Fixed plugin settings being uneditable after Reupload app (Big thanks for https://github.com/ef-labs/stash-hook-mirror)
 3) Added support for authentication on a remote repository using a personal token.
+![image](https://github.com/user-attachments/assets/4f902ef7-a7f4-47b3-a54e-d0ffc7a9f6c0)
